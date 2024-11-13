@@ -1,21 +1,26 @@
-import express, { response } from 'express';
+import express from 'express';
+import { PrismaClient } from '@prisma/client';
 
-const PORT = 3333;
+import dotenv from 'dotenv';
+dotenv.config();
+
+const PORT = process.env.PORT;
+
 const app = express();
 app.use(express.json());
 
-const users = [];
+const prisma = new PrismaClient();
 
-app.get('/', (request, response) => response.send(`Página index`) );
+app.get('/', (request, response) => response.status(200).send(`Página index`) );
 
-app.post('/createUser', (request, response) => {
-    users.push(request.body);    
-    response.send("Usuario criado com sucesso");
+app.post('/createUser', async (request, response) => {
+    response.status(201).send("Usuario criado com sucesso");
 });
 
-app.get('/listUsers', (request, response) => {
-    response.json(users);
-    console.table(users);
+app.get('/listUsers', async (request, response) => {
+    const users = await prisma.user.findMany();
+    console.table(users);    
+    response.status(200).json(users);
 });
 
 app.listen(PORT, () => {
