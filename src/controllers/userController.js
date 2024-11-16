@@ -11,7 +11,7 @@ export const createUser = async (request, response) => {
         });
         response.status(201).json({'message': 'Usuario criado com sucesso'});
     } catch (error) {
-        response.status(500).json({'message': 'Erro ao criar usuario'})
+        response.status(400).json({'message': 'Erro ao criar usuario'})
     };
 };
 
@@ -46,5 +46,5 @@ export const editUser = async (request, response) => {
             age: request.body.age
         }
     }); 
-    response.status(201).json({'message': 'Usuario deletado com sucesso'});
+    response.status(200).json({'message': 'Usuario deletado com sucesso'});
 };
